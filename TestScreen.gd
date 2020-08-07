@@ -10,7 +10,7 @@ extends Control
 func _ready():
     Network.lobby_connect()
     
-func set_color(color):
+remote func set_color(color):
     $Background.color = Color(color)
     
 func on_gotm():

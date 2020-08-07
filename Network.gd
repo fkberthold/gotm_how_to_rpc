@@ -27,6 +27,4 @@ func lobby_connect():
         peer = NetworkedMultiplayerENet.new()
         peer.create_server(8070)
     get_tree().set_network_peer(peer)
-    
-remote func set_color(color):
-    get_tree().get_root().get_node("TestScreen").set_color(color)
+
