@@ -8,6 +8,9 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    Gotm.connect("lobby_changed", self, "_on_lobby_changed")
+    Gotm.connect("peer_joined", self, "_on_peer_joined")
+    Gotm.connect("peer_left", self, "_on_peer_left")
     Network.lobby_connect()
     
 remote func set_color(color):
@@ -64,3 +67,18 @@ func _on_SendColor_pressed():
     print("Sending Color: " + str($ColorPickerButton.color))
     rpc("set_color", $ColorPickerButton.color)
 #    set_color($ColorPickerButton.color)
+
+func _on_lobby_changed():
+    $Events.text = $Events.text + "Lobby changed.\n"
+
+func _on_peer_joined(peer):
+    if peer:
+        $Events.text = $Events.text + "Peer joined: " + str(peer) + "\n"
+    else:
+        $Events.text = $Events.text + "Unknown Peer joined.\n"     
+
+func _on_peer_left(peer):
+    if peer:
+        $Events.text = $Events.text + "Peer left: " + str(peer) + "\n"
+    else:
+        $Events.text = $Events.text + "Unknown Peer left.\n"
