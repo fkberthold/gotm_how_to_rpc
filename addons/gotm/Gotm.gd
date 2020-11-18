@@ -66,7 +66,7 @@ var lobby: GotmLobby = null
 # The API is live when the game runs on gotm.io.
 # Running the game in the web player (gotm.io/web-player) also counts as live.
 func is_live() -> bool:
-	return false
+    return false
 
 
 # Create a new lobby and join it.
@@ -79,7 +79,7 @@ func is_live() -> bool:
 #
 # Returns the hosted lobby (also accessible at 'Gotm.lobby').
 static func host_lobby(show_invitation: bool = true) -> GotmLobby:
-	return _GotmImpl._host_lobby(GotmLobby.new())
+    return _GotmImpl._host_lobby(GotmLobby.new())
 
 
 # Play an audio snippet with 'message' as a synthesized voice.
@@ -87,7 +87,7 @@ static func host_lobby(show_invitation: bool = true) -> GotmLobby:
 # If specified language is not available "en-US" is used.
 # Return true if playback succeeded.
 func text_to_speech(message: String, language: String = "en-US") -> bool:
-	return true # pretend it worked
+    return true # pretend it worked
 
 
 # Asynchronously open up the browser's file picker.
@@ -104,8 +104,8 @@ func text_to_speech(message: String, language: String = "en-US") -> bool:
 # Asynchronously return an array of 'GotmFile'.
 # Use 'yield(pick_files(), "completed")' to retrieve the return value.
 func pick_files(types: Array = Array(), only_one: bool = false) -> Array:
-	yield(get_tree().create_timer(0.25), "timeout")
-	return []
+    yield(get_tree().create_timer(0.25), "timeout")
+    return []
 
 
 
@@ -113,7 +113,7 @@ func pick_files(types: Array = Array(), only_one: bool = false) -> Array:
 # PRIVATE
 ##############################################################
 func _ready() -> void:
-	_GotmImpl._initialize(GotmLobby, GotmUser)
+    _GotmImpl._initialize(GotmLobby, GotmUser)
 func _process(delta) -> void:
-	_GotmImpl._process()
+    _GotmImpl._process()
 var _impl: Dictionary = {}

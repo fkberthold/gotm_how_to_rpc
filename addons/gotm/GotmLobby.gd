@@ -96,22 +96,22 @@ var locked: bool = false
 #
 # Asyncronously returns true if successful, else false.
 func join() -> bool:
-	return yield(_GotmImpl._join_lobby(self), "completed")
+    return yield(_GotmImpl._join_lobby(self), "completed")
 
 
 # Leave this lobby.
 func leave() -> void:
-	_GotmImpl._leave_lobby(self)
+    _GotmImpl._leave_lobby(self)
 
 
 # Am I the host of this lobby?
 func is_host() -> bool:
-	return _GotmImpl._is_lobby_host(self)
+    return _GotmImpl._is_lobby_host(self)
 
 
 # Get a custom property.
 func get_property(name: String):
-	return _GotmImpl._get_lobby_property(self, name)
+    return _GotmImpl._get_lobby_property(self, name)
 
 
 
@@ -121,7 +121,7 @@ func get_property(name: String):
 # Kick peer from this lobby.
 # Returns true if successful, else false.
 func kick(peer: GotmUser) -> bool:
-	return _GotmImpl._kick_lobby_peer(self, peer)
+    return _GotmImpl._kick_lobby_peer(self, peer)
 
 
 # Store up to 10 of your own custom properties in the lobby.
@@ -131,21 +131,21 @@ func kick(peer: GotmUser) -> bool:
 # Strings longer than 64 characters are truncated.
 # Setting 'value' to null removes the property.
 func set_property(name: String, value) -> void:
-	_GotmImpl._set_lobby_property(self, name, value)
+    _GotmImpl._set_lobby_property(self, name, value)
 
 
 # Make this lobby filterable by a custom property.
 # Filtering is done when fetching lobbies with 'GotmLobbyFetch'.
 # Up to 3 properties can be set as filterable at once.
 func set_filterable(property_name: String, filterable: bool = true) -> void:
-	_GotmImpl._set_lobby_filterable(self, property_name, filterable)
+    _GotmImpl._set_lobby_filterable(self, property_name, filterable)
 
 
 # Make this lobby sortable by a custom property.
 # Sorting is done when fetching lobbies with 'GotmLobbyFetch'.
 # Up to 3 properties can be set as sortable at once.
 func set_sortable(property_name: String, sortable: bool = true) -> void:
-	_GotmImpl._set_lobby_sortable(self, property_name, sortable)
+    _GotmImpl._set_lobby_sortable(self, property_name, sortable)
 
 
 
