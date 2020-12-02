@@ -154,11 +154,21 @@ __meta__ = {
 }
 
 [node name="Events" type="TextEdit" parent="."]
-margin_left = 242.0
-margin_top = 22.0
-margin_right = 996.0
-margin_bottom = 248.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -754.0
+margin_top = 26.0
+margin_right = -18.0
+margin_bottom = 226.0
 custom_fonts/font = SubResource( 2 )
 readonly = true
 wrap_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostCheckTimer" type="Timer" parent="."]
+wait_time = 0.5
+[connection signal="connect_lobby" from="." to="." method="_on_TestScreen_connect_lobby"]
 [connection signal="pressed" from="SendColor" to="." method="_on_SendColor_pressed"]
+[connection signal="timeout" from="HostCheckTimer" to="." method="_on_HostCheckTimer_timeout"]
