@@ -95,24 +95,24 @@ var sort_max_exclusive = false
 # Fetch the next lobbies, starting after the last lobby fetched
 # in the previous call.
 func next(count: int = 8) -> Array:
-    return yield(_GotmImpl._fetch_lobbies(self, count, "next"), "completed")
+	return yield(_GotmImpl._fetch_lobbies(self, count, "next"), "completed")
 
 
 # Fetch the previous lobbies, ending before the first lobby
 # that was fetched in the previous call.
 func previous(count: int = 8) -> Array:
-    return yield(_GotmImpl._fetch_lobbies(self, count, "previous"), "completed")
+	return yield(_GotmImpl._fetch_lobbies(self, count, "previous"), "completed")
 
 
 # Fetch the first lobbies.
 func first(count: int = 8) -> Array:
-    return yield(_GotmImpl._fetch_lobbies(self, count, "first"), "completed")
+	return yield(_GotmImpl._fetch_lobbies(self, count, "first"), "completed")
 
 
 # Fetch lobbies at the current position.
 # Useful for refreshing lobbies without changing the page.
 func current(count: int = 8) -> Array:
-    return yield(_GotmImpl._fetch_lobbies(self, count, "current"), "completed")
+	return yield(_GotmImpl._fetch_lobbies(self, count, "current"), "completed")
 
 
 

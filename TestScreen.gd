@@ -1,23 +1,19 @@
 extends Control
 
-signal connect_lobby(lobby)
-var connecting = true
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
     Gotm.connect("lobby_changed", self, "_on_lobby_changed")
     Network.lobby_connect()
+
     
 remote func set_color(color):
     $Background.color = Color(color)
-    $Events.text += "Setting my color to: %s\n" % color
-
-remote func join_lobby(new_lobby):
-    print("Joining Lobby: " + str(new_lobby))
-    var success = yield(new_lobby.join(), "completed")
-    var peer = NetworkedMultiplayerENet.new()
-    peer.create_client(Gotm.lobby.host.address, 8070)  
-    get_tree().set_network_peer(peer)
     
 func on_gotm():
     if Gotm.is_live():
@@ -55,6 +51,7 @@ func number_in_lobby():
     else:
         $Fields/NumberInLobby.text = "Players In Lobby: 0"
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     on_gotm()
@@ -64,52 +61,26 @@ func _process(delta):
     host_is()
     number_in_lobby()
 
+
 func _on_SendColor_pressed():
     print("Sending Color: " + str($ColorPickerButton.color))
     rpc("set_color", $ColorPickerButton.color)
+#    set_color($ColorPickerButton.color)
 
 func _on_lobby_changed():
     $Events.text = $Events.text + "Lobby changed.\n"
     if Gotm.lobby:
-        get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
-        get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
-        if Gotm.lobby.is_host():
-            $Events.text += "I'm the Host: %s\n" % str(Gotm.lobby.id)
-            Gotm.lobby.set_property("created", OS.get_system_time_msecs())
-            $Events.text += "Lobby creation time: %s\n" % Gotm.lobby.get_property("created")
-        $HostCheckTimer.start()
-        connecting = false
+        Gotm.lobby.connect("peer_joined", self, "_on_peer_joined")
+        Gotm.lobby.connect("peer_left", self, "_on_peer_left")
+
+func _on_peer_joined(peer):
+    if peer:
+        $Events.text = $Events.text + "Peer joined: " + str(peer) + "\n"
     else:
-        $Events.text += "Lobby Lost."
-        $HostCheckTimer.stop()
-        Network.lobby_connect()
-        emit_signal("connect_lobby", null)
+        $Events.text = $Events.text + "Unknown Peer joined.\n"     
 
-func _on_network_peer_connected(peer_id):
-    $Events.text += "Peer network connection: %s\n" % str(peer_id)
-
-func _on_network_peer_disconnected(peer_id):
-    $Events.text += "Peer network disconnection: %s\n" % str(peer_id)
-
-func _on_HostCheckTimer_timeout():
-    if connecting:
-        return
-    var fetch = GotmLobbyFetch.new()
-    fetch.sort_property("created")
-    fetch.sort_ascending()
-    var lobbies = yield(fetch.first(), "completed")
-    if lobbies:
-        var other_lobby = lobbies[0]
-        $Events.text += "Checking lobby pairing with: %s\n" % str(other_lobby.get_property("created"))
-        if other_lobby.id != Gotm.lobby.id and other_lobby.get_property("created") < Gotm.lobby.get_property("created"):
-            $Events.text += "Found earlier lobby.\n"
-            if Gotm.lobby.peers and Gotm.lobby.is_host():
-                rpc("join_lobby", other_lobby)
-            emit_signal("connect_lobby", other_lobby)
-
-func _on_TestScreen_connect_lobby(lobby):
-    connecting = true
-    if lobby:
-        join_lobby(lobby)
+func _on_peer_left(peer):
+    if peer:
+        $Events.text = $Events.text + "Peer left: " + str(peer) + "\n"
     else:
-        Network.lobby_connect()
+        $Events.text = $Events.text + "Unknown Peer left.\n"
